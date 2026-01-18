@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wallet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+    <!-- Header Balance -->
+    <div class="balance-card">
+        <div class="balance-label">Total Assets</div>
+        <div class="balance-val">$14,250.00</div>
+    </div>
+
+    <!-- Big Action Buttons -->
+    <div class="actions-row">
+        <div class="action-btn" onclick="alert('Deposit Clicked')">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            <span class="action-label">Deposit</span>
+        </div>
+        <div class="action-btn" onclick="alert('Send Clicked')">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span class="action-label">Send</span>
+        </div>
+    </div>
+
+    <!-- Portfolio Grid -->
+    <div class="portfolio-section">
+        <h3 class="portfolio-title">Portfolio</h3>
+        
+        <div class="portfolio-grid">
+            <!-- Asset 1 -->
+            <div class="crypto-card" onclick="location.href='crypto_info.html'">
+                <div class="card-icon-area">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213657.png" class="card-icon-img" alt="gift">
+                </div>
+                <div class="card-info">
+                    <span class="token-name">Launch</span>
+                    <span class="token-amount">x100</span>
+                </div>
+            </div>
+
+            <!-- Asset 2 -->
+            <div class="crypto-card" onclick="location.href='crypto_info.html'">
+                <div class="card-icon-area">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213657.png" class="card-icon-img" alt="gift">
+                </div>
+                <div class="card-info">
+                    <span class="token-name">Launch</span>
+                    <span class="token-amount">x100</span>
+                </div>
+            </div>
+
+            <!-- Asset 3 -->
+            <div class="crypto-card" onclick="location.href='crypto_info.html'">
+                <div class="card-icon-area">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213657.png" class="card-icon-img" alt="gift">
+                </div>
+                <div class="card-info">
+                    <span class="token-name">Launch</span>
+                    <span class="token-amount">x100</span>
+                </div>
+            </div>
+             <!-- Asset 4 -->
+             <div class="crypto-card" onclick="location.href='crypto_info.html'">
+                <div class="card-icon-area">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213657.png" class="card-icon-img" alt="gift">
+                </div>
+                <div class="card-info">
+                    <span class="token-name">Launch</span>
+                    <span class="token-amount">x100</span>
+                </div>
+            </div>
+             <!-- Asset 5 -->
+             <div class="crypto-card" onclick="location.href='crypto_info.html'">
+                <div class="card-icon-area">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213657.png" class="card-icon-img" alt="gift">
+                </div>
+                <div class="card-info">
+                    <span class="token-name">Launch</span>
+                    <span class="token-amount">x100</span>
+                </div>
+            </div>
+             <!-- Asset 6 -->
+             <div class="crypto-card" onclick="location.href='crypto_info.html'">
+                <div class="card-icon-area">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4213/4213657.png" class="card-icon-img" alt="gift">
+                </div>
+                <div class="card-info">
+                    <span class="token-name">Launch</span>
+                    <span class="token-amount">x100</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <!-- Home (Inactive - Left) -->
+        <div class="nav-item" onclick="location.href='index.html'">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </div>
+        <!-- Stats -->
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <!-- Trade/Swap (Center) -->
+        <div class="nav-trade-circle" onclick="location.href='crypto_info.html'">
+            <svg class="icon" style="color:black;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+        </div>
+        <!-- History -->
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <!-- Wallet (Active - Right) -->
+        <div class="nav-item active">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#000000');
+    </script>
+</body>
+</html>

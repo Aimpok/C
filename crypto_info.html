@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crypto Info</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+    <div class="trade-container">
+        <!-- Top Info -->
+        <div class="trade-top-bar flex-between">
+            <!-- ИСПРАВЛЕНИЕ: onclick="window.history.back()" -->
+            <div onclick="window.history.back()" style="cursor: pointer;">
+                <div class="pair-title">
+                    <svg class="icon" style="transform: rotate(180deg); margin-right:5px;" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    BTC / USDT
+                </div>
+                <div style="font-size:12px; color:var(--text-sec); margin-top:4px; margin-left: 30px;">Perpetual Contract</div>
+            </div>
+            <div style="background:#222; padding:6px 10px; border-radius:6px; font-size:13px; font-weight:600; color: #2CCF74;">
+                +2.45%
+            </div>
+        </div>
+
+        <div class="price-big">96,442.50</div>
+
+        <!-- Chart -->
+        <div class="chart-area">
+            <canvas id="chartCanvas"></canvas>
+            <div style="position: absolute; top:12px; left:16px; font-size:11px; color:#555; font-weight:600;">BTC/USDT • 15m</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="trade-tabs">
+            <div class="t-tab active" onclick="switchTab(this, 'positions')">Positions</div>
+            <div class="t-tab" onclick="switchTab(this, 'orders')">Orders</div>
+        </div>
+
+        <div id="tab-content-positions" class="tab-content">
+            <div style="text-align:center; color:var(--text-sec); padding: 40px 20px; border:1px dashed var(--border); border-radius:12px;">
+                No open positions
+            </div>
+        </div>
+        <div id="tab-content-orders" class="tab-content hidden">
+             <div style="text-align:center; color:var(--text-sec); padding: 40px 20px;">
+                No active orders
+            </div>
+        </div>
+
+        <!-- Fixed Action Button -->
+        <div class="trade-actions-fixed">
+            <button class="btn btn-primary" onclick="openOrderModal()">Купить</button>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="order-modal" class="order-overlay">
+        <div style="flex:1;" onclick="closeOrderModal()"></div>
+        <div class="modal-content">
+            <div class="flex-between" style="margin-bottom:20px;">
+                <h2 style="font-size:20px;">Купить BTC</h2>
+                <div onclick="closeOrderModal()" style="padding:5px; cursor:pointer;">
+                    <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </div>
+            </div>
+            
+            <div class="flex-between" style="margin-bottom:15px; font-size:14px;">
+                <span class="text-sec">Type</span>
+                <span style="font-weight:600;">Market Order</span>
+            </div>
+
+            <div class="input-group">
+                <label>Amount (USDT)</label>
+                <input type="number" class="input-field" placeholder="0" style="font-size:28px; padding: 10px 0;">
+            </div>
+
+            <div class="flex-between" style="margin: 20px 0; color:var(--text-sec); font-size:13px;">
+                <span>Available</span>
+                <span>14,250 USDT</span>
+            </div>
+
+            <button class="btn btn-primary" onclick="placeOrder()">Подтвердить</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation: В крипто инфо можно сделать кнопки просто ссылками, либо оставить как есть, главное Back работает -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="location.href='index.html'">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        </div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        </div>
+        <div class="nav-trade-circle" onclick="location.href='crypto_info.html'">
+             <svg class="icon" style="color:black;" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+        </div>
+        <div class="nav-item">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="nav-item" onclick="location.href='wallet.html'">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.setHeaderColor('#000000');
+
+        // Tabs Logic
+        function switchTab(el, tabName) {
+            document.querySelectorAll('.t-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+            document.getElementById('tab-content-' + tabName).classList.remove('hidden');
+            tg.HapticFeedback.selectionChanged();
+        }
+
+        // Modal Logic
+        function openOrderModal() {
+            document.getElementById('order-modal').classList.add('open');
+            tg.HapticFeedback.impactOccurred('medium');
+        }
+
+        function closeOrderModal() {
+            document.getElementById('order-modal').classList.remove('open');
+        }
+
+        function placeOrder() {
+            closeOrderModal();
+            tg.showAlert("Order Executed");
+            tg.HapticFeedback.notificationOccurred('success');
+        }
+
+        // Chart Logic (Same as before)
+        function drawChart() {
+            const canvas = document.getElementById('chartCanvas');
+            if(!canvas) return;
+            const parent = canvas.parentElement;
+            canvas.width = parent.offsetWidth;
+            canvas.height = parent.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0,0,w,h);
+            ctx.strokeStyle = '#222';
+            ctx.lineWidth = 1;
+            for(let i=0; i<w; i+=50) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,h); ctx.stroke(); }
+            for(let i=0; i<h; i+=50) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(w,i); ctx.stroke(); }
+
+            const candleWidth = 8;
+            const gap = 4;
+            let x = 20;
+            let y = h/2;
+            
+            for (x=20; x<w; x+=(candleWidth+gap)) {
+                const change = (Math.random() - 0.5) * 40;
+                const height = Math.abs(change) + 2;
+                const isUp = change > 0;
+                
+                if (isUp) {
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.strokeStyle = '#FFFFFF';
+                    ctx.fillRect(x, y - height, candleWidth, height);
+                    ctx.beginPath(); ctx.moveTo(x+candleWidth/2, y-height); ctx.lineTo(x+candleWidth/2, y-height-5); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(x+candleWidth/2, y); ctx.lineTo(x+candleWidth/2, y+5); ctx.stroke();
+                } else {
+                    ctx.strokeStyle = '#FFFFFF';
+                    ctx.lineWidth = 1.5;
+                    ctx.strokeRect(x, y, candleWidth, height);
+                    ctx.beginPath(); ctx.moveTo(x+candleWidth/2, y); ctx.lineTo(x+candleWidth/2, y-5); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(x+candleWidth/2, y+height); ctx.lineTo(x+candleWidth/2, y+height+5); ctx.stroke();
+                }
+                
+                y -= change;
+                if(y < 50) y = 50;
+                if(y > h-50) y = h-50;
+            }
+        }
+
+        setTimeout(drawChart, 100);
+        window.addEventListener('resize', drawChart);
+    </script>
+</body>
+</html>
